@@ -8,9 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var journal = Entries()
+    @ObservedObject var user = User()
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        TabView {
+            Journal(journal: journal, user: user)
+                .tabItem {
+                    Label("Journal", systemImage: "book.closed")
+                }
+            
+            Profile(journal: journal, user: user)
+                .tabItem {
+                    Label("Profile", systemImage: "person.crop.circle")
+                }
+        }
     }
 }
 

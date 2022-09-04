@@ -11,6 +11,11 @@
 		524CA34028BFFEB100B7A9BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CA33F28BFFEB100B7A9BC /* ContentView.swift */; };
 		524CA34228BFFEB100B7A9BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 524CA34128BFFEB100B7A9BC /* Assets.xcassets */; };
 		524CA34528BFFEB100B7A9BC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 524CA34428BFFEB100B7A9BC /* Preview Assets.xcassets */; };
+		524CA35028BFFFB300B7A9BC /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CA34F28BFFFB300B7A9BC /* Entry.swift */; };
+		524CA35228BFFFBC00B7A9BC /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CA35128BFFFBC00B7A9BC /* Entries.swift */; };
+		524CA35428C0013700B7A9BC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CA35328C0013700B7A9BC /* User.swift */; };
+		524CA35828C0042400B7A9BC /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CA35728C0042400B7A9BC /* Profile.swift */; };
+		524CA35A28C0042C00B7A9BC /* Journal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 524CA35928C0042C00B7A9BC /* Journal.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +24,11 @@
 		524CA33F28BFFEB100B7A9BC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		524CA34128BFFEB100B7A9BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		524CA34428BFFEB100B7A9BC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		524CA34F28BFFFB300B7A9BC /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		524CA35128BFFFBC00B7A9BC /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
+		524CA35328C0013700B7A9BC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		524CA35728C0042400B7A9BC /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		524CA35928C0042C00B7A9BC /* Journal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journal.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +61,10 @@
 		524CA33C28BFFEB100B7A9BC /* Self Reflection */ = {
 			isa = PBXGroup;
 			children = (
-				524CA33D28BFFEB100B7A9BC /* Self_ReflectionApp.swift */,
+				524CA34E28BFFF6E00B7A9BC /* Model */,
+				524CA34D28BFFF6300B7A9BC /* Views */,
 				524CA33F28BFFEB100B7A9BC /* ContentView.swift */,
+				524CA33D28BFFEB100B7A9BC /* Self_ReflectionApp.swift */,
 				524CA34128BFFEB100B7A9BC /* Assets.xcassets */,
 				524CA34328BFFEB100B7A9BC /* Preview Content */,
 			);
@@ -65,6 +77,25 @@
 				524CA34428BFFEB100B7A9BC /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		524CA34D28BFFF6300B7A9BC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				524CA35928C0042C00B7A9BC /* Journal.swift */,
+				524CA35728C0042400B7A9BC /* Profile.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		524CA34E28BFFF6E00B7A9BC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				524CA34F28BFFFB300B7A9BC /* Entry.swift */,
+				524CA35128BFFFBC00B7A9BC /* Entries.swift */,
+				524CA35328C0013700B7A9BC /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +168,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				524CA35028BFFFB300B7A9BC /* Entry.swift in Sources */,
+				524CA35828C0042400B7A9BC /* Profile.swift in Sources */,
 				524CA34028BFFEB100B7A9BC /* ContentView.swift in Sources */,
+				524CA35228BFFFBC00B7A9BC /* Entries.swift in Sources */,
+				524CA35428C0013700B7A9BC /* User.swift in Sources */,
+				524CA35A28C0042C00B7A9BC /* Journal.swift in Sources */,
 				524CA33E28BFFEB100B7A9BC /* Self_ReflectionApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
