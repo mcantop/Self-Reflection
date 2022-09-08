@@ -14,46 +14,52 @@ struct Profile: View {
     @State private var birthday = Date()
     
     var body: some View {
-        NavigationView {
-            List {
-                Section {
-                    TextField("Your name", text: $name)
-                        .onAppear {
-                            let savedName = user.data.name
-                            name = savedName ?? "User"
-                        }
-                    
-                        .onChange(of: name, perform: { newName in
-                            user.data.name = newName
-                        })
-                } header: {
-                    Text("Name")
-                }
+        List {
+            Section {
+                TextField("Your name", text: $name)
+                    .onAppear {
+                        let savedName = user.data.name
+                        name = savedName ?? "User"
+                    }
                 
-                Section {
-                    DatePicker("Your birthday", selection: $birthday, displayedComponents: .date)
-                        .onAppear {
-                            let savedBirthday = user.data.birthday
-                            birthday = savedBirthday ?? Date.now
-                        }
-                    
-                        .onChange(of: birthday) { newBirthday in
-                            user.data.birthday = newBirthday
-                        }
-                } header: {
-                    Text("Birthday")
-                }
-                
-                Section {
-                    Text("\(journal.entries.count)")
-                    
-                } header: {
-                    Text("Entries")
-                }
+                    .onChange(of: name, perform: { newName in
+                        user.data.name = newName
+                    })
+            } header: {
+                Text("Name")
             }
-            .navigationTitle("Your Profile")
+            
+            Section {
+                DatePicker("Your birthday", selection: $birthday, displayedComponents: .date)
+                    .onAppear {
+                        let savedBirthday = user.data.birthday
+                        birthday = savedBirthday ?? Date.now
+                    }
+                
+                    .onChange(of: birthday) { newBirthday in
+                        user.data.birthday = newBirthday
+                    }
+            } header: {
+                Text("Birthday")
+            }
+            
+            Section {
+                Text("\(journal.entries.count)")
+                
+            } header: {
+                Text("Entries")
+            }
         }
-        .navigationViewStyle(.stack)
+        .navigationTitle("Your Profile")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            Button {
+                journal.entries = []
+            } label: {
+                Image(systemName: "trash.circle.fill")
+            }
+
+        }
     }
 }
 
