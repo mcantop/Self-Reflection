@@ -11,52 +11,124 @@ struct ContentView: View {
     @ObservedObject var journal = Entries()
     @ObservedObject var user = User()
     @State var showingSheet = false
+    @State var navigate = false
+    
+    func feelingColor(emoji: String) -> [Color] {
+        var colors: [Color] = []
+        
+        switch emoji {
+        case "😭":
+            colors = [Color(0xA8DADC), Color(0x8233C5), Color(0xE963FD)]
+            //        case "😢":
+            //            colors = [Color(0xA8DADC), Color(0x), Color(0x)]
+        case "😐":
+            colors = []
+        case "😌":
+            colors = []
+        case "😄":
+            colors = []
+        case "🥰":
+            colors = []
+        case "🤪":
+            colors = []
+        default:
+            colors = []
+        }
+        
+        return colors
+    }
     
     var body: some View {
         NavigationView {
             ZStack {
                 List {
-                    ForEach(journal.entries) { entry in
-                        NavigationLink(destination: EntryDetails()) {
-                            VStack(alignment: .leading, spacing: 5) {
-                                HStack {
-                                    Text(entry.title)
-                                        .fontWeight(.semibold)
-                                    
-                                    Spacer()
-                                    
-                                    Text(entry.date.formatted(date: .abbreviated, time: .omitted))
-                                        .foregroundColor(.secondary)
-                                }
-                                Text(entry.body)
-                                    .lineLimit(2)
-                                    .font(.body)
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(Date.now.formatted(.dateTime.month(.wide).day().year()).uppercased())
+                            .foregroundColor(.secondary)
+                        
+                            Text("Welcome back, \(user.data.name ?? "User")")
+                                .font(.system(size: 28, weight: .bold, design: .rounded))
+                        
+                        if journal.entries.count != 0 {
+                            HStack(alignment: .bottom) {
+                                Text("Latest entries:")
+                                    .fontWeight(.semibold)
                                 
-                                HStack {
-                                    LinearGradient(colors: [
-                                        .green, .green.opacity(0.5), .green.opacity(0.25), .accentColor.opacity(0)
-                                    ], startPoint: .leading, endPoint: .trailing)
-                                    .frame(height: 5)
-                                    .cornerRadius(10)
-                                    
-                                    Text(entry.feeling)
-                                }
+                                Spacer()
                                 
+                                Text("\(journal.entries.count) written entries")
+                                    .font(.system(.footnote))
+                                    .foregroundColor(.secondary)
                             }
-                            .padding(.top, 15)
-                            .padding(.bottom, 15)
                         }
+                    }
+                    .font(.system(.body, design: .rounded))
+                    .listRowSeparator(.hidden, edges: .top)
+                    
+                    if journal.entries.count == 0 {
+                        VStack(spacing: 30) {
+                            Text("Your entries seem... empty? How about writing a new one?")
+                                .multilineTextAlignment(.center)
+                            
+                            Button {
+                                showingSheet.toggle()
+                            } label: {
+                                Label("New entry", systemImage: "pencil")
+                            }
+                            .sheet(isPresented: $showingSheet) {
+                                NewEntry(journal: journal)
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 10)
+                        .padding(.bottom, 10)
+                        .listRowSeparator(.hidden)
+                    } else {
+                        ForEach(journal.entries) { entry in
+                            VStack(alignment: .leading, spacing: 0) {
+                                NavigationLink(destination: EntryDetails(journal: journal, entry: entry), isActive: $navigate) { }
+                                    .hidden()
+                                    .frame(width: 0, height: 0)
+                                
+                                Button {
+                                    navigate.toggle()
+                                } label: {
+                                    VStack(alignment: .leading, spacing: 5) {
+                                        Text(entry.date.formatted(date: .abbreviated, time: .omitted))
+                                            .foregroundColor(.secondary)
+                                            .font(.system(.footnote))
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        
+                                        Text(entry.title)
+                                            .fontWeight(.semibold)
+                                            .lineLimit(1)
+                                        
+                                        Text(entry.body)
+                                            .lineLimit(3)
+                                            .font(.body)
+                                        
+                                        Text("\(entry.words) words")
+                                            .font(.system(.footnote))
+                                            .foregroundColor(.secondary)
+                                            .frame(maxWidth: .infinity, alignment: .trailing)
+                                        
+                                    }
+                                }
+                            }
+                            
+                        }
+                        .onDelete { journal.entries.remove(atOffsets: $0) }
                     }
                 }
                 AddButton(journal: journal, showingSheet: showingSheet)
             }
-            .listRowSeparator(.hidden)
             .listStyle(.plain)
-            .navigationTitle("Self Reflection")
+            .navigationBarTitle("Self Reflection")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Text(Date.now.formatted(.dateTime.month(.wide).day().year()).uppercased())
-                        .foregroundColor(.secondary)
+                    EditButton()
                 }
                 
                 ToolbarItem {
@@ -71,13 +143,8 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    @ObservedObject var journal = Entries()
-    
     static var previews: some View {
-        Group {
-            ContentView()
-                .previewInterfaceOrientation(.portrait)
-        }
+        ContentView()
     }
 }
 
@@ -110,5 +177,17 @@ struct AddButton: View {
             }
         }
         .ignoresSafeArea()
+    }
+}
+
+extension Color {
+    init(_ hex: UInt, alpha: Double = 1) {
+        self.init(
+            .sRGB,
+            red: Double((hex >> 16) & 0xFF) / 255,
+            green: Double((hex >> 8) & 0xFF) / 255,
+            blue: Double(hex & 0xFF) / 255,
+            opacity: alpha
+        )
     }
 }

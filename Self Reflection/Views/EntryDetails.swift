@@ -8,13 +8,50 @@
 import SwiftUI
 
 struct EntryDetails: View {
+    @Environment(\.dismiss) var dismiss
+    @ObservedObject var journal: Entries
+    var entry: Entry
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HStack {
+                Text(entry.title)
+                    .lineLimit(1)
+                
+                Text(entry.feeling)
+                
+                Spacer()
+                
+                Text(entry.date.formatted(date: .abbreviated, time: .shortened))
+                    .foregroundColor(.secondary)
+            }
+            
+            Divider()
+            
+            Text(entry.body)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Spacer()
+        }
+        .padding()
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem {
+                Button {
+                    let entryInArray = journal.entries.firstIndex(of: entry)
+                    journal.entries.remove(at: entryInArray!)
+                    dismiss()
+                } label: {
+                    Image(systemName: "trash")
+                }
+
+            }
+        }
     }
 }
 
 struct EntryDetails_Previews: PreviewProvider {
     static var previews: some View {
-        EntryDetails()
+        EntryDetails(journal: Entries(), entry: Entry(title: "title", body: "test", date: Date.now, feeling: "😄", words: 327))
     }
 }

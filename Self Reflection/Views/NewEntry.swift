@@ -13,16 +13,14 @@ struct NewEntry: View {
     @State private var title = ""
     @State private var content = ""
     @State private var date = Date.now
-    @State private var wordCount: Int = 0
+    @State private var wordCount = 0
     @State private var selectedSection = "Write"
-    @State private var selectedFeeling = "Good"
     @State private var feeling = 3.0
     @State private var isEditing = false
     @State private var entryColor = Color.accentColor
     
     var emoji: String {
         var userEmoji: String = "😊"
-        // 😄😌🤪😭😢🥰
         
         switch feeling {
         case 0.00...0.99:
@@ -62,6 +60,11 @@ struct NewEntry: View {
                     Divider()
                     
                     TextEditor(text: $content)
+                        .onChange(of: content) { value in
+                            let words = value.split { $0 == " " || $0.isNewline }
+                            wordCount = words.count
+                        }
+                    
                 } else {
                     Slider(
                         value: $feeling,
@@ -72,17 +75,10 @@ struct NewEntry: View {
                     } minimumValueLabel: {
                         Text("Sad")
                     } maximumValueLabel: {
-                        Text("Happy")
+                        Text(feeling == 6.0 ? "Crazy" : "Happy")
                     } onEditingChanged: { editing in
                         isEditing = editing
                     }
-                    
-                    Divider()
-                    
-                    ColorPicker("Entry color", selection: $entryColor)
-                        .onChange(of: entryColor) { newValue in
-                            print(newValue)
-                        }
                     
                     Divider()
                     
@@ -92,7 +88,11 @@ struct NewEntry: View {
                         .font(.system(size: 150))
                     
                     Spacer()
+                    
                 }
+                Text("\(wordCount) words")
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                    .foregroundColor(.secondary)
                 Divider()
                 
                 Picker("", selection: $selectedSection) {
@@ -101,9 +101,6 @@ struct NewEntry: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                //                Text("\(wordCount) words")
-                //                    .frame(maxWidth: .infinity, alignment: .trailing)
-                //                    .foregroundColor(.secondary)
             }
             .padding()
             .navigationTitle("New Entry")
@@ -126,7 +123,8 @@ struct NewEntry: View {
                             title: title,
                             body: content,
                             date: date,
-                            feeling: emoji
+                            feeling: emoji,
+                            words: wordCount
                         )
                         
                         journal.entries.insert(newEntry, at: 0)
